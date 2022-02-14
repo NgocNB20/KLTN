@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;database=travel2;characterEncoding=UTF-8
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: sa
+    password: 12345678
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8080
+
+app:
+  auth:
+    secret-key: &$HFG@264kdh534UYR
+    expired-token-time: 3600
+    expired-remember-token-time: 86400
+
+  file:
+    location: /Users/phuongdp/Projects/FA/Class/FJB_02/Courseware/9. JWD/Demo/cms_spring/assets
+    avatar: ${app.file.location}/avatar
+    url-prefix: http://localhost:8889/file
+
+  page:
+    size: 2
+
+  mail:
+    sender-name: FJB2_Class
+    sender-email: javatraining7812@gmail.com
+    password: Abcd1234#
+
+  api:
+    host: http://localhost:${server.port}
+
+
+
+

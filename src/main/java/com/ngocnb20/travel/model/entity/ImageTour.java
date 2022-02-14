@@ -1,5 +1,7 @@
 package com.ngocnb20.travel.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,14 +11,17 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Data
-@Table(name = "Tours")
+@Table(name = "image_tours")
 public class ImageTour {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String url;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="tour_id",referencedColumnName = "id")
+    //@JsonBackReference(value = "imageTours")
     private Tour tour =new Tour();
 }

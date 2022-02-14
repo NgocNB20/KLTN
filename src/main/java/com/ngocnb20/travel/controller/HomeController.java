@@ -1,40 +1,41 @@
 package com.ngocnb20.travel.controller;
 
-import com.ngocnb20.travel.model.entity.CategoryPlace;
-import com.ngocnb20.travel.model.entity.Place;
-import com.ngocnb20.travel.repository.PlaceService;
+import com.ngocnb20.travel.constant.StatusRespData;
+import com.ngocnb20.travel.model.dto.resp.BaseRespDto;
+import com.ngocnb20.travel.model.dto.resp.MenuRespDto;
+import com.ngocnb20.travel.model.entity.Blog;
+import com.ngocnb20.travel.service.BlogService;
+import com.ngocnb20.travel.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.ngocnb20.travel.repository.CategoryPlaceRepository;
-import com.ngocnb20.travel.repository.PlaceRepository;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
-public class HomeController {
-   @Autowired
-   PlaceService placeService;
+@RequestMapping( path= "/home")
+public class HomeController extends BaseController{
+
     @Autowired
-    CategoryPlaceRepository repository;
-    @GetMapping("/home")
-    public Place save(){
-        Set<Place> places=new HashSet<>();
-        Place place1=new Place("N1");
-        Place place2=new Place("N2");
-        places.add(place1);
-        places.add(place2);
-        Set<CategoryPlace> categoryPlaces=new HashSet<>();
-        CategoryPlace categoryPlace=new CategoryPlace("P1");
-        CategoryPlace categoryPlace1=new CategoryPlace("P2");
-        categoryPlaces.add(categoryPlace1);
-        categoryPlaces.add(categoryPlace);
-        place1.setCategoryPlaces(categoryPlaces);
-        place2.setCategoryPlaces(categoryPlaces);
-        placeService.savePlace(place2);
-        return placeService.savePlace(place1);
+    MenuService menuService;
+
+
+
+
+    @GetMapping(path = "/menu",produces = "application/json;charset=UTF-8")
+    public ResponseEntity<BaseRespDto> getMenu(){
+        System.out.println(menuService.getMenuDto().get().get(1).getName());
+        List<MenuRespDto> menus=menuService.getMenuDto().get();
+
+        return ResponseEntity.ok(
+                BaseRespDto.success(StatusRespData.GET_DATA_SUCCESS,menus)
+        );
     }
+
+
+
 }

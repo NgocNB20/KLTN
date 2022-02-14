@@ -5,7 +5,9 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,16 +15,16 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Data
+
 @Table(name = "roles")
 public class Role {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Nationalized // NVarchar to save UTF-8
-    @NotBlank
-    private String name;
+    @Column(name = "role_name", unique = true, nullable = false)
+    private String roleName;
     @OneToMany(mappedBy = "role")
-    private Set<Account> accounts=new HashSet<>();
+    List<RoleMember> roleMembers = new ArrayList<>();
 
 }

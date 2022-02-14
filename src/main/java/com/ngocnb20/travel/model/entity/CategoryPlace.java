@@ -1,32 +1,91 @@
 package com.ngocnb20.travel.model.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Data
-@Table(name = "category_places")
+@Table(
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"id_category", "id_place"})}
+)
 public class CategoryPlace {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy ="categoryPlaces")
-    private Set<Place> places=new HashSet<>();
 
-    public CategoryPlace(String name, Set<Place> places) {
-        this.name = name;
-        this.places = places;
-    }
+    @JsonIgnore
+    @ManyToOne()
+    @JoinColumn(name = "id_category",referencedColumnName = "id")
+    private  Category category;
 
-    public CategoryPlace(String name) {
-        this.name = name;
-    }
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id_place",referencedColumnName = "id")
+    private Place place;
+
+
 }
+
+
+
+
+
+
+
+//    @EmbeddedId
+//    CategoryPlaceKey id;
+//
+//    @JsonIgnore
+//    @ManyToOne()
+//    @MapsId("categoryId")
+//    @JoinColumn(name = "id_category",referencedColumnName = "id")
+//    //@JsonBackReference(value = "places")
+//    private Category category;
+//
+//    @JsonIgnore
+//    @ManyToOne()
+//    @MapsId("placeId")
+//    @JoinColumn(name = "id_place",referencedColumnName = "id")
+//    //@JsonBackReference(value = "categories")
+//    private Place place;
+//    @Column(columnDefinition = "nvarchar(255)")
+//    private String name;
+
+//public class CategoryPlace {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long idCategoryPlace;
+//    @ManyToOne()
+//    @JoinColumn(name = "id_category",referencedColumnName = "id")
+//    private Category category;
+//    @ManyToOne()
+//    @JoinColumn(name = "id_place",referencedColumnName = "id")
+//    private Place place;
+//}
+
+//@Entity
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Getter
+//@Setter
+//@Data
+//public class CategoryPlace {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    private Long idCategoryPlace;
+//    @ManyToOne()
+//    @JoinColumn(name = "id_category",referencedColumnName = "id")
+//    private Category category;
+//    @ManyToOne()
+//    @JoinColumn(name = "id_place",referencedColumnName = "id")
+//    private Place place;
+//}

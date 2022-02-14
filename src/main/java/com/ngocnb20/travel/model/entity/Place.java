@@ -1,7 +1,8 @@
 package com.ngocnb20.travel.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-import model.entity.ImagePlace;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,34 +12,40 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Data
+
 @Table(name = "places")
-public class Place {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_place")
-    private Long id;
-    private String name;
-    private String address;
-    private String price;
-    private int view;
-    private int comment;
-    private int like;
-    private String detail;
-    private String image;
-    @OneToMany(mappedBy = "place")
-    private Set<ImagePlace> imagePlaces;
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(name="place_categorys",joinColumns = {@JoinColumn( name="place_id")},
-                inverseJoinColumns = {@JoinColumn(name = "category_image_id")})
-    private Set<CategoryPlace> categoryPlaces=new HashSet<>();
+public class Place extends Auditable {
 
-    public Place(String name, Set<CategoryPlace> categoryPlaces) {
-        this.name = name;
-        this.categoryPlaces = categoryPlaces;
-    }
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+        @Column(columnDefinition = "nvarchar(255)")
+        private String name;
+        @Column(columnDefinition = "nvarchar(255)")
+        private String address;
+        @Column(columnDefinition = "nvarchar(255)")
+        private String price;
+        @Column(name = "number_view")
+        private int numberView;
+        @Column(name = "number_like")
+        private int numberLike;
+        @Column(name = "number_comment")
+        private int numberComment;
+        @Column(columnDefinition = "nvarchar(Max)")
+        private String detail;
+    //    private String image;
 
-    public Place(String name) {
-        this.name = name;
-    }
+        @OneToMany(mappedBy = "place")
+        //@JsonManagedReference(value = "imagePlaces")
+        private Set<ImagePlace> imagePlaces;
+
+        @OneToMany(mappedBy = "place")
+       // @JsonManagedReference(value="categories")
+        private Set<CategoryPlace> categories=new HashSet<>();
+
+        @ManyToOne()
+        @JoinColumn(name = "author_id",referencedColumnName = "id")
+        @JsonIgnore
+        private Member member;
+
 }

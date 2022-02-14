@@ -1,34 +1,49 @@
 package com.ngocnb20.travel.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Data
-@Table(name = "Hotels")
-public class Hotel {
+
+@Table(name = "hotels")
+public class Hotel extends Auditable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String image;
-    private int view;
+    @Column(name = "number_view")
+    private int numberView;
     private int rate;
-    private int like;
+    @Column(name = "number_like")
+    private int numberLike;
+    @Column(columnDefinition = "nvarchar(255)")
     private String address;
+    @Column(columnDefinition = "nvarchar(255)")
     private String type;
+    @Email
     private String email;
     @Column(name = "url_web")
     private String urlWeb;
     private String phone;
+    @Column(columnDefinition = "nvarchar(Max)")
     private String detail;
     private double price;
+    @Column(columnDefinition = "nvarchar(Max)")
     private String service;
+    @Column(columnDefinition = "nvarchar(255)")
+    private String name;
 
+    @ManyToOne()
+    @JoinColumn(name = "author_id",referencedColumnName = "id")
+    @JsonIgnore
+    private Member member;
 
 
 }

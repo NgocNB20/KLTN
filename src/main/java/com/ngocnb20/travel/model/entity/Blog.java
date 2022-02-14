@@ -1,5 +1,6 @@
 package com.ngocnb20.travel.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,18 +10,34 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@Data
+
 @Table(name = "blogs")
-public class Blog {
+public class Blog extends Auditable {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int view;
-    private int comment;
-    private int like;
+    @Column(name = "number_view")
+    private int numberView;
+    @Column(name = "number_comment")
+    private int numberComment;
+    @Column(name = "number_like")
+    private int numberLike;
+    @Column(name = "date_blog")
     private LocalDate date;
     private String image;
+    @Column(columnDefinition = "nvarchar(255)")
     private String title;
+    @Column(columnDefinition = "nvarchar(Max)")
     private String detail;
+    @Column(name = "datail_summary",columnDefinition = "nvarchar(Max)")
+    private String detailSummary;
+
+    @ManyToOne()
+    @JoinColumn(name = "author_id",referencedColumnName = "id")
+    @JsonIgnore
+    private Member member;
+
+
 
 }
